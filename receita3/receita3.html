@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+   <meta charset="UTF-8">
+   <link rel="stylesheet" href="receita4.css">
+</head>
+
+<body>
+   <div id="divAcao">
+      <button id="botaoCarregar">Exibir / Ocultar cerveja</button>
+   </div>
+
+   <div id="divExibicao"></div>
+
+   <script>
+      let botao = document.getElementById("botaoCarregar")
+      let divConteudo = document.getElementById("divExibicao")
+
+      function alternarCerveja() {
+         if (divConteudo.classList.contains("visivel")) {
+            divConteudo.classList.remove("visivel")
+
+            setTimeout(() => {
+               divConteudo.innerHTML = ""
+            }, 500)
+         } else {
+            divConteudo.innerHTML = "<h1>Guinness</h1>"
+
+            setTimeout(() => {
+               divConteudo.classList.add("visivel")
+            }, 10)
+         }
+      }
+
+      botao.addEventListener("click", alternarCerveja)
+   </script>
+</body>
+</html>

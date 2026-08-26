@@ -1,0 +1,10 @@
+#divExibicao {
+   margin-top: 15px;
+   opacity: 0;
+   transition: opacity 0.5s ease-in-out;
+}
+
+/* Classe utilitária para exibir com Fade-In */
+#divExibicao.visivel {
+   opacity: 1;
+}

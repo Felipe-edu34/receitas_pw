@@ -1,0 +1,52 @@
+.verso {
+   font-size: 16px;
+   margin: 4px 0;
+}
+
+.mote {
+   color: red;
+   font-weight: bold;
+   font-size: 16px;
+   margin: 4px 0;
+}
+
+a {
+   color: #1a0dab;
+   text-decoration: none;
+   font-weight: 500;
+}
+
+a:hover {
+   color: #d93025; /* Muda de cor quando o mouse passa por cima */
+   text-decoration: underline;
+}
+
+a:visited {
+   color: #681da8; /* Cor diferenciada após o link ser visitado */
+}
+
+div.poeta img {
+   width: 80px;
+   height: 80px;
+   border-radius: 50%; /* Torna a imagem arredondada */
+   object-fit: cover;
+   vertical-align: middle;
+   margin-right: 10px;
+}
+
+th {
+   background-color: #2c3e50;
+   color: #ffffff;
+   padding: 10px 16px;
+   text-align: left;
+}
+
+td {
+   padding: 8px 16px;
+   border-bottom: 1px solid #ddd;
+}
+
+table {
+   border-collapse: collapse;
+   margin-top: 20px;
+}

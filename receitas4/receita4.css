@@ -1,0 +1,9 @@
+.minha-div {
+  background-color: #00BFFF; /* Cor de fundo */
+  color: #d40808;            /* Cor do texto */
+  padding: 20px;             /* Espaçamento interno */
+  margin: 10px;              /* Espaçamento externo */
+  border: 2px solid #000000; /* Borda */
+  border-radius: 8px;        /* Arredondamento das bordas */
+  width: 300px;              /* Largura fixa */
+}

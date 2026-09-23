@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receita 8 - Promises (then/catch)</title>
+    <link rel="stylesheet" href="receita8.css">
+</head>
+<body>
+
+    <a href="../index.html" class="voltar">← Voltar para a Página Principal</a>
+
+    <h1>Receita 8: Promises e Encadeamento (then/catch)</h1>
+    <p>Refatoração do processo de extração de dados usando a sintaxe clássica de Promises.</p>
+    
+    <div class="botoes-container">
+        <button id="botaoCarregar" class="btn-acao">Carregar Personagens da API</button>
+        <button id="botaoErro" class="btn-acao btn-erro">Testar Exceção no Catch</button>
+    </div>
+
+    <div id="dadosDiv"></div>
+
+    <!-- O type="module" permite utilizar a função de criação de tabelas feita na Receita 7 -->
+    <script type="module">
+        import { gerarTabelaGenerica } from './tabela.js'; // Garanta que este ficheiro existe na mesma diretoria
+
+        const divDestino = "dadosDiv";
+        const divContainer = document.getElementById(divDestino);
+
+        // Nenhuma das funções utiliza mais "async" ou "await"
+        const carregarDadosComPromise = (url) => {
+            
+            // Informação visual imediata
+            divContainer.innerHTML = `<div class="msg-status msg-carregamento">Fazendo requisição...</div>`;
+
+            // Encadeamento de Promises como exigido no Passo 6 da Receita 8
+            fetch(url)
+                .then(resposta => {
+                    // Verificação manual de erro de resposta HTTP para forçar a queda no catch
+                    if (!resposta.ok) {
+                        throw new Error(`Erro HTTP: ${resposta.status}`);
+                    }
+                    // A conversão para JSON também devolve uma Promise, logo, permite continuar o encadeamento
+                    return resposta.json();
+                })
+                .then(jsonResult => {
+                    // Na API do Rick and Morty, a lista de objetos fica dentro do nó "results"
+                    const arrayDePersonagens = jsonResult.results;
+                    
+                    // Definições genéricas para a tabela (requisito vindo da receita anterior)
+                    const nomesCabecalhos = ["ID", "Nome", "Status", "Origem"];
+                    
+                    // No Rick and Morty, a origem é um objeto, então mapeamos dinamicamente usando uma função extra se necessário, 
+                    // mas para manter a simplicidade do json dinâmico (item[prop]), podemos mapear props de raiz como imagem.
+                    // Para aceder a propriedades alinhadas (jsonResult.results[0].origin.name), usaríamos lógica avançada, 
+                    // então ficaremos com propriedades diretas.
+                    const propriedadesChaves = ["id", "name", "status", "species"];
+                    const cabecalhosMapeados = ["ID", "Nome", "Status", "Espécie"];
+
+                    // Invoca a função importada
+                    gerarTabelaGenerica(arrayDePersonagens, divDestino, cabecalhosMapeados, propriedadesChaves);
+                })
+                .catch(erro => {
+                    // Este bloco captura erros no fetch (como quebras de rede ou CORS) ou o "throw new Error" lançado acima
+                    divContainer.innerHTML = `<div class="msg-status msg-erro">Fudeu... Houve um erro na operação: <br>${erro.message}</div>`;
+                });
+        };
+
+        // Registo dos eventos
+        document.getElementById("botaoCarregar").addEventListener("click", () => {
+            carregarDadosComPromise("https://rickandmortyapi.com/api/character");
+        });
+
+        document.getElementById("botaoErro").addEventListener("click", () => {
+            carregarDadosComPromise("https://rickandmortyapi.com/api/url-quebrada");
+        });
+
+    </script>
+</body>
+</html>

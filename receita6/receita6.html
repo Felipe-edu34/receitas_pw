@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receita 6 - JSON e Objetos Genéricos</title>
+    <link rel="stylesheet" href="receita6.css">
+</head>
+<body>
+
+    <a href="../index.html" class="voltar">← Voltar para a Página Principal</a>
+
+    <h1>Receita 6: Objetos JSON e Funções Genéricas</h1>
+
+    <a id="linkCarregar" class="link-acao">Carregar Personagens</a>
+
+    <div id="cervejasDiv"></div>
+
+    <script>
+        const personagens = [
+            { 
+                nome: "Rick Sanchez", 
+                especie: "Humano / Cientista", 
+                status: "Vivo", 
+                dimensao: "C-137" 
+            },
+            { 
+                nome: "Morty Smith", 
+                especie: "Humano", 
+                status: "Vivo", 
+                dimensao: "C-137" 
+            },
+            { 
+                nome: "Birdperson", 
+                especie: "Homem-Pássaro", 
+                status: "Ressuscitado", 
+                dimensao: "Desconhecida" 
+            },
+            { 
+                nome: "Mr. Meeseeks", 
+                especie: "Meeseeks", 
+                status: "Desconhecido", 
+                dimensao: "Caixa Meeseeks" 
+            }
+        ];
+
+        
+        const carregarTabelaGenerica = (
+            itens, 
+            id_destino = "cervejasDiv", 
+            cabecalhos = ["Nome", "Espécie", "Status", "Dimensão"], 
+            propriedades = ["nome", "especie", "status", "dimensao"]
+        ) => {
+            const div = document.getElementById(id_destino);
+
+            const theadHtml = `
+                <thead>
+                    <tr>
+                        ${cabecalhos.map(cabecalho => `<th>${cabecalho}</th>`).join('')}
+                    </tr>
+                </thead>
+            `;
+
+            const linhasHtml = itens.map(item => `
+                <tr>
+                    ${propriedades.map(prop => `<td>${item[prop]}</td>`).join('')}
+                </tr>
+            `).join('');
+
+            div.innerHTML = `
+                <table>
+                    ${theadHtml}
+                    <tbody>
+                        ${linhasHtml}
+                    </tbody>
+                </table>
+            `;
+        };
+
+        const linkCarregar = document.getElementById("linkCarregar");
+
+        linkCarregar.addEventListener("click", (evento) => {
+            evento.preventDefault();
+            // Invocando a função genérica; como não passamos os três últimos parâmetros, 
+            // ela vai utilizar os valores default que definimos na assinatura da função.
+            carregarTabelaGenerica(personagens);
+        });
+
+    </script>
+</body>
+</html>

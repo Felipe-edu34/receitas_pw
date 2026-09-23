@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receita 7 - Fetch e Async/Await</title>
+    <!-- Importação do ficheiro CSS -->
+    <link rel="stylesheet" href="receita7.css">
+</head>
+<body>
+
+    <a href="../index.html" class="voltar">← Voltar para a Página Principal</a>
+
+    <h1>Receita 7: Fetch e Módulos Genéricos</h1>
+    
+    <button id="botaoCarregar" class="btn-acao">Carregar Personagens da API</button>
+    <button id="botaoErro" class="btn-acao" style="background-color: #dc3545;">Testar Tratamento de Erro</button>
+
+    <div id="dadosDiv"></div>
+
+    <!-- type="module" é OBRIGATÓRIO para usar import/export no navegador -->
+    <script type="module">
+        // Importando a função genérica do ficheiro separado
+        import { gerarTabelaGenerica } from './tabela.js';
+
+        // Elementos da interface
+        const divDestino = "dadosDiv";
+        const divContainer = document.getElementById(divDestino);
+
+        // Arrow function assíncrona para buscar os dados
+        const carregarDadosAPI = async (url) => {
+            try {
+                divContainer.innerHTML = "<p>Carregando dados da API...</p>";
+                
+                // Aguarda a promessa do fetch
+                const res = await fetch(url);
+                
+                // Se o status HTTP não for OK (ex: 404), dispara um erro manualmente
+                if (!res.ok) throw new Error("Erro na requisição HTTP: " + res.status);
+                
+                // Aguarda a conversão para JSON
+                const dadosJSON = await res.json();
+                
+                // A API do Rick and Morty retorna um objeto onde o array real fica dentro de "results"
+                const personagens = dadosJSON.results;
+
+                // Definimos quais colunas e propriedades queremos exibir (Exercício 1 e 3)
+                const nomesCabecalhos = ["Nome", "Espécie", "Gênero", "Status"];
+                const propriedadesChaves = ["name", "species", "gender", "status"];
+
+                // Chamamos a função importada do tabela.js
+                gerarTabelaGenerica(personagens, divDestino, nomesCabecalhos, propriedadesChaves);
+
+            } catch (erro) {
+                // Tratamento de erro seguro caso a API falhe ou a URL esteja errada
+                divContainer.innerHTML = `<div class="erro-msg">Ocorreu um problema ao buscar os dados: ${erro.message}</div>`;
+                console.error(erro);
+            }
+        };
+
+        // Eventos dos botões
+        document.getElementById("botaoCarregar").addEventListener("click", () => {
+            // URL correta
+            carregarDadosAPI("https://rickandmortyapi.com/api/character");
+        });
+
+        document.getElementById("botaoErro").addEventListener("click", () => {
+            // URL quebrada intencionalmente para testar o bloco catch
+            carregarDadosAPI("https://rickandmortyapi.com/api/erro-proposital-404");
+        });
+
+    </script>
+</body>
+</html>

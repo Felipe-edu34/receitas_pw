@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receita 5</title>
+    <link rel="stylesheet" href="receita5.css">
+</head>
+<body>
+
+    <a href="../index.html" class="voltar">← Voltar para a Página Principal</a>
+
+    <h1>Receita 5: Arrow e Callback Functions</h1>
+
+    <div class="botoes-container">
+        <a id="linkCarregar" class="link-acao">Carregar Personagens</a>
+        <a id="linkOrdenar" class="link-acao">Ordenar por Nome</a>
+    </div>
+
+    <div id="meu amor"></div>
+
+    <script>
+        const personagens = [
+            { nome: "Rick Sanchez", especie: "Humano / Cientista", status: "Vivo" },
+            { nome: "Morty Smith", especie: "Humano", status: "Vivo" },
+            { nome: "Birdperson", especie: "Homem-Pássaro", status: "Ressuscitado" },
+            { nome: "Mr. Meeseeks", especie: "Meeseeks", status: "Desconhecido" }
+        ];
+
+        const carregarDiv = (cervs) => {
+            const div = document.getElementById("meu amor");
+
+            const linhasHtml = cervs.map(item => `
+                <tr>
+                    <td><strong>${item.nome}</strong></td>
+                    <td>${item.especie}</td>
+                    <td>${item.status}</td>
+                </tr>
+            `);
+
+            div.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Espécie</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${linhasHtml.join("\n")}
+                    </tbody>
+                </table>
+            `;
+        };
+
+        const ordenarPersonagens = (itens) => {
+            const copiaOrdenada = [...itens].sort((a, b) => a.nome.localeCompare(b.nome));
+            carregarDiv(copiaOrdenada);
+        };
+
+        const linkCarregar = document.getElementById("linkCarregar");
+        const linkOrdenar = document.getElementById("linkOrdenar");
+
+        linkCarregar.addEventListener("click", (evento) => {
+            evento.preventDefault();
+            carregarDiv(personagens);
+        });
+
+        linkOrdenar.addEventListener("click", (evento) => {
+            evento.preventDefault();
+            ordenarPersonagens(personagens);
+        });
+    </script>
+</body>
+</html>
